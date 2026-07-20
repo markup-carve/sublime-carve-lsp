@@ -50,6 +50,38 @@ The server itself is an npm package. `lsp_utils` installs it into this
 plugin's storage directory and provides a Node runtime, so **no global Node
 installation is required**.
 
+## Keybindings
+
+**LSP ships its keybindings commented out**, so `F12` and friends do nothing
+until you enable them - this is LSP's default, not a problem with this package.
+Every feature is available immediately from the command palette
+(`LSP: Goto Definition`, `LSP: Find References`, `LSP: Rename`, ...).
+
+To bind the common ones, open **Preferences > Key Bindings** and add:
+
+```json
+[
+	{
+		"keys": ["f12"],
+		"command": "lsp_symbol_definition",
+		"args": {"side_by_side": false, "force_group": true, "fallback": false, "group": -1},
+		"context": [
+			{"key": "lsp.session_with_capability", "operand": "definitionProvider"},
+			{"key": "auto_complete_visible", "operand": false}
+		]
+	},
+	{
+		"keys": ["f2"],
+		"command": "lsp_symbol_rename",
+		"context": [{"key": "lsp.session_with_capability", "operand": "renameProvider"}]
+	}
+]
+```
+
+The capability guard means each key keeps its normal behaviour in files no
+server handles. `alt+enter` (code action) and `shift+f12` (find references) are
+enabled by LSP out of the box.
+
 ## Configuration
 
 Open **Preferences > Package Settings > LSP > Servers > LSP-carve**, or run
