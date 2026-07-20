@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "dependencies": {
+    "@markup-carve/carve-lsp": "0.1.0"
+  }
+}

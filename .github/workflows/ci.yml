@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    name: Validate package files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Validate JSON (comments allowed in .sublime-settings)
+        run: |
+          python - <<'PY'
+          import glob
+          import json
+          import re
+          import sys
+
+          paths = sorted(
+              glob.glob('*.json')
+              + glob.glob('*.sublime-settings')
+              + glob.glob('*.sublime-menu')
+              + glob.glob('*.sublime-commands')
+              + glob.glob('language-server/package.json')
+          )
+          failed = False
+          for path in paths:
+              raw = open(path, encoding='utf-8').read()
+              # Sublime accepts // comments and trailing commas; strip both.
+              stripped = re.sub(r'^\s*//.*$', '', raw, flags=re.M)
+              stripped = re.sub(r',(\s*[}\]])', r'\1', stripped)
+              try:
+                  json.loads(stripped)
+                  print('ok  ', path)
+              except Exception as error:
+                  print('FAIL', path, error)
+                  failed = True
+          sys.exit(1 if failed else 0)
+          PY
+
+      - name: Byte-compile the plugin
+        # The plugin imports LSP/lsp_utils, which only exist inside Sublime, so
+        # compile it rather than importing it.
+        run: python -m py_compile plugin.py
+
+  server:
+    name: Pinned server starts and speaks LSP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install the pinned carve-lsp
+        working-directory: language-server
+        run: npm install --no-audit --no-fund
+
+      - name: Handshake with the server over stdio
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          import sys
+          import time
+
+          def frame(message):
+              body = json.dumps(message).encode()
+              return b'Content-Length: %d\r\n\r\n' % len(body) + body
+
+          server = subprocess.Popen(
+              ['node', 'language-server/node_modules/@markup-carve/carve-lsp/dist/server.js', '--stdio'],
+              stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+          )
+          server.stdin.write(frame({
+              'jsonrpc': '2.0', 'id': 1, 'method': 'initialize',
+              'params': {'processId': None, 'rootUri': None, 'capabilities': {}},
+          }))
+          server.stdin.flush()
+          time.sleep(2)
+          server.stdin.write(frame({'jsonrpc': '2.0', 'method': 'initialized', 'params': {}}))
+          server.stdin.write(frame({
+              'jsonrpc': '2.0', 'method': 'textDocument/didOpen',
+              'params': {'textDocument': {
+                  'uri': 'file:///ci.crv', 'languageId': 'carve', 'version': 1,
+                  # `**bold**` is a Markdown habit Carve does not share, so the
+                  # server must report it.
+                  'text': '# Title\n\n**markdown bold**\n',
+              }},
+          }))
+          server.stdin.flush()
+          time.sleep(3)
+          server.terminate()
+          out, err = server.communicate(timeout=10)
+          text = out.decode('utf-8', 'replace')
+
+          problems = []
+          if '"capabilities"' not in text:
+              problems.append('no capabilities in the initialize response')
+          if 'publishDiagnostics' not in text:
+              problems.append('no diagnostics published')
+          if 'markdown-strong-double-star' not in text:
+              problems.append('expected diagnostic for ** not reported')
+          if problems:
+              print('FAILED:', '; '.join(problems))
+              print('stderr:', err.decode('utf-8', 'replace')[:2000])
+              sys.exit(1)
+          print('server handshake ok, diagnostics published')
+          PY

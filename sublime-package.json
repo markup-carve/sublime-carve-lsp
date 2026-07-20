@@ -1,0 +1,19 @@
+{
+  "contributions": {
+    "settings": [
+      {
+        "file_patterns": [
+          "/LSP-carve.sublime-settings"
+        ],
+        "schema": {
+          "$id": "sublime://settings/LSP-carve",
+          "allOf": [
+            {
+              "$ref": "sublime://settings/LSP-plugin-base"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

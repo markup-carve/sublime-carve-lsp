@@ -1,0 +1,14 @@
+{
+	// The server is installed by lsp_utils; ${node_bin} and ${server_path} are
+	// filled in by NodeManager (see plugin.py), so no global Node is required.
+	"command": ["${node_bin}", "${server_path}", "--stdio"],
+
+	// Carve documents. `text.carve` is the scope of the Carve syntax shipped by
+	// the sublime-carve package, which this plugin expects to be installed.
+	"selector": "text.carve",
+
+	// carve-lsp reads no configuration of its own: everything it reports comes
+	// from the document and the shared Carve corpus. Client-side behaviour is
+	// configured through the standard LSP settings above this line.
+	"settings": {}
+}
