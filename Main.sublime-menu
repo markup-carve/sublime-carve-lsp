@@ -8,26 +8,6 @@
         "id": "package-settings",
         "children": [
           {
-            "caption": "LSP",
-            "id": "lsp-settings",
-            "children": [
-              {
-                "caption": "Servers",
-                "id": "lsp-servers",
-                "children": [
-                  {
-                    "caption": "LSP-carve",
-                    "command": "edit_settings",
-                    "args": {
-                      "base_file": "${packages}/LSP-carve/LSP-carve.sublime-settings",
-                      "default": "// Settings in here override those in \"LSP-carve/LSP-carve.sublime-settings\"\n\n{\n\t$0\n}\n"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
             "caption": "LSP-carve",
             "children": [
               {
@@ -44,6 +24,26 @@
                 "args": {
                   "file": "${packages}/LSP-carve/README.md"
                 }
+              }
+            ]
+          },
+          {
+            "caption": "LSP",
+            "id": "lsp-settings",
+            "children": [
+              {
+                "caption": "Servers",
+                "id": "lsp-servers",
+                "children": [
+                  {
+                    "caption": "LSP-carve",
+                    "command": "edit_settings",
+                    "args": {
+                      "base_file": "${packages}/LSP-carve/LSP-carve.sublime-settings",
+                      "default": "// Settings in here override those in \"LSP-carve/LSP-carve.sublime-settings\"\n\n{\n\t$0\n}\n"
+                    }
+                  }
+                ]
               }
             ]
           }
