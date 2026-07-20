@@ -1,4 +1,4 @@
-# LSP-carve
+# sublime-carve-lsp
 
 Language-server support for the [Carve](https://github.com/markup-carve/carve)
 markup language in Sublime Text, powered by
@@ -7,6 +7,17 @@ markup language in Sublime Text, powered by
 Syntax highlighting comes from
 [sublime-carve](https://github.com/markup-carve/sublime-carve); this package
 adds everything a language server provides on top of it.
+
+> **Names.** This repository is `sublime-carve-lsp`, but it installs as the
+> package **`LSP-carve`** - Sublime's client packages are all named
+> `LSP-<language>` (LSP-yaml, LSP-json, ...), which is how Package Control
+> users find them. The same split already exists for the syntax package: the
+> repo is `sublime-carve`, the package is `Carve`.
+>
+> Do not confuse this with [carve-lsp](https://github.com/markup-carve/carve-lsp),
+> which is the **language server itself** (a TypeScript npm package used by
+> VS Code, IntelliJ, Zed, and Neovim too). This repository is only the thin
+> Sublime client that installs and launches it.
 
 ## Features
 
