@@ -1,0 +1,16 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":pinVersions"
+  ],
+  "packageRules": [
+    {
+      "description": "Bump the bundled Carve language server as soon as a release is out.",
+      "matchPackageNames": ["@markup-carve/carve-lsp"],
+      "matchManagers": ["npm"],
+      "automerge": false,
+      "labels": ["dependencies", "language-server"]
+    }
+  ]
+}

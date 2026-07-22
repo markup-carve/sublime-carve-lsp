@@ -4,4 +4,4 @@
 .gitattributes export-ignore
 .gitignore export-ignore
 .editorconfig export-ignore
-language-server/package-lock.json export-ignore
+renovate.json export-ignore
