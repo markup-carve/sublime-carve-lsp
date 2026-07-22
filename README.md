@@ -57,7 +57,9 @@ until you enable them - this is LSP's default, not a problem with this package.
 Every feature is available immediately from the command palette
 (`LSP: Goto Definition`, `LSP: Find References`, `LSP: Rename`, ...).
 
-To bind the common ones, open **Preferences > Key Bindings** and add:
+To bind the common ones, run **Preferences: LSP Key Bindings** from the command
+palette (it opens the same user key-bindings file on the right, with LSP's own
+bindings for reference on the left) and add:
 
 ```json
 [

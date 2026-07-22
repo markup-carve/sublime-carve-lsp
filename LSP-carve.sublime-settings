@@ -1,4 +1,10 @@
 {
+	// The path to the server binary used to start the language server.
+	// Use `auto` for the package to manage (install/update) the server automatically.
+	// NOTE: Change this instead of directly updating `command` - the `${server_path}` variable is dynamically resolved based on this setting.
+	// WARNING: Override at your own risk - using a custom binary can cause compatibility issues with server settings.
+	"server_path": "auto",
+
 	// The server is installed by lsp_utils; ${node_bin} and ${server_path} are
 	// filled in by NodeManager (see plugin.py), so no global Node is required.
 	"command": ["${node_bin}", "${server_path}", "--stdio"],
