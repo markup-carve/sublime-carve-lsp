@@ -54,10 +54,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install the pinned carve-lsp
-        working-directory: language-server
-        run: npm install --no-audit --no-fund
-
       - name: Compare the pinned server against npm
         id: server
         run: |
@@ -76,6 +72,8 @@ jobs:
             echo "::error::${pkg}@${declared} resolves to nothing on the registry - an install here is broken"
             exit 1
           fi
+          # Read from the COMMITTED lockfile: this step runs before any install,
+          # because an install would rewrite the very file being checked.
           locked="$(node -p "require('./language-server/package-lock.json').packages['node_modules/${pkg}'].version")"
           echo "declared        ${declared}"
           echo "resolves to     ${resolved}"
@@ -89,6 +87,15 @@ jobs:
             echo "::warning::${pkg} ${latest} is published, but this package takes ${resolved} - the pin is exact, so no release arrives on its own"
           fi
           echo "latest=${latest}" >> "${GITHUB_OUTPUT}"
+
+      - name: Install the pinned carve-lsp
+        working-directory: language-server
+        # `npm ci` and not `npm install`, and AFTER the comparison above: an
+        # install rewrites package-lock.json in the runner, so a manifest and a
+        # lockfile that genuinely disagree would be reconciled before anything
+        # compared them, and the check could never fail. npm ci also refuses
+        # outright on that disagreement rather than papering over it.
+        run: npm ci --no-audit --no-fund
 
       - name: Read the engine the pinned server carries
         id: engine
