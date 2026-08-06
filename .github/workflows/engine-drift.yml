@@ -109,17 +109,34 @@ jobs:
             echo "::error::the installed carve-lsp declares no @markup-carve/carve dependency, so the engine behind this client cannot be identified"
             exit 1
           fi
+          # The INSTALLED engine, not what the range resolves to today. npm ci
+          # takes the version the committed lockfile pins, and that is what a
+          # Sublime user runs; resolving the range instead names a release the
+          # pinned server is not running the moment a newer one satisfies it -
+          # which is already the case here (the lockfile holds 0.1.1 while
+          # `^0.1.1` would now take 0.1.2), so the distance below would have
+          # been measured against the wrong tag.
+          engine="$(node -p "require('./language-server/node_modules/@markup-carve/carve/package.json').version")"
+          if [ -z "${engine}" ]; then
+            echo "::error::no @markup-carve/carve is installed under the pinned carve-lsp, so the engine behind this client cannot be identified"
+            exit 1
+          fi
           # `npm view <pkg>@<range> version` prints ONE bare version when the
           # range matches a single release, and `<pkg>@<v> '<v>'` lines when it
           # matches several. Taking the last WHITESPACE-SEPARATED FIELD reads
           # both; `tail -1` alone concatenates the spec onto the version the
           # moment a second matching release exists.
-          engine="$(npm view "@markup-carve/carve@${range}" version 2>/dev/null | tail -1 | tr -d "'\"" | awk '{print $NF}')"
-          if [ -z "${engine}" ]; then
+          available="$(npm view "@markup-carve/carve@${range}" version 2>/dev/null | tail -1 | tr -d "'\"" | awk '{print $NF}')"
+          echo "the pinned server declares engine range ${range}"
+          echo "installed engine  ${engine}"
+          echo "range would take  ${available:-nothing}"
+          if [ -z "${available}" ]; then
             echo "::error::the server's engine range ${range} resolves to nothing on the registry"
             exit 1
           fi
-          echo "the pinned server carries engine range ${range}, resolving to ${engine}"
+          if [ "${engine}" != "${available}" ]; then
+            echo "::warning::the lockfile holds engine ${engine} while the server's range ${range} would now take ${available} - refreshing language-server/package-lock.json moves the engine without touching any pin"
+          fi
           echo "engine=${engine}" >> "${GITHUB_OUTPUT}"
 
       - name: Check out the engine
