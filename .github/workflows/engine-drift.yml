@@ -7,7 +7,7 @@ name: Engine drift
 # proves it starts; a server that starts and is a year old passes that check
 # exactly as well as a current one.
 #
-# The pin here is EXACT (`"@markup-carve/carve-lsp": "0.1.0"`), so nothing
+# The pin here is EXACT (`"@markup-carve/carve-lsp": "0.1.2"`), so nothing
 # arrives on its own - not even a patch release. Renovate is configured for it,
 # which raises a PR; nothing says how far behind the package is in the meantime,
 # or whether the newer server would still work with this client.
@@ -48,9 +48,9 @@ jobs:
     name: The pinned server, and the engine it carries
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '20'
 
@@ -140,7 +140,7 @@ jobs:
           echo "engine=${engine}" >> "${GITHUB_OUTPUT}"
 
       - name: Check out the engine
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: markup-carve/carve-js
           path: carve-js
@@ -172,9 +172,9 @@ jobs:
     name: The server this package would take next still speaks to it
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '20'
 
