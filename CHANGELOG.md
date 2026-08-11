@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.1.1
+
 - Menu: only extend the LSP > Servers submenu, dropping the duplicate top-level
   entry, to match the other `LSP-*` packages.
 - Expose a `server_path` setting (default `auto`) so a locally installed server
