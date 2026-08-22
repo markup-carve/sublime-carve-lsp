@@ -107,7 +107,3 @@ on).
 
 The two are complementary: install both. sublime-carve works on its own; this
 package needs it for the `text.carve` selector to match.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
