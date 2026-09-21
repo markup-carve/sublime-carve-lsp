@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 0.1.2
+
+- Bundle carve-lsp 0.1.7, five releases on from the 0.1.2 this package shipped
+  before 0.1.1 was cut. It brings include resolution (definition, completion and
+  diagnostics on a `{{ path }}` directive, on a `@lines` range and on a named
+  section), crossrefs that resolve across an include, workspace intelligence,
+  pull diagnostics, colon-fence tooling and safe fixes. The engine underneath it
+  moves from carve-js 0.1.3 to 0.1.7.
+
 ## 0.1.1
 
 - Menu: only extend the LSP > Servers submenu, dropping the duplicate top-level
