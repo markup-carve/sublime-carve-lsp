@@ -43,10 +43,14 @@ on:
     - cron: "0 5 * * *"
   workflow_dispatch:
 
+# Jobs carry an explicit timeout-minutes: without one GitHub applies a
+# 360-minute default, long enough for a stalled job to go unnoticed.
+
 jobs:
   server-pin:
     name: The pinned server, and the engine it carries
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
 
@@ -171,6 +175,7 @@ jobs:
   latest-server:
     name: The server this package would take next still speaks to it
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
 
