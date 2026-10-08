@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 0.1.3
+
+- Bundle carve-lsp 0.1.9, whose engine resolves to carve-js 0.1.10 instead of
+  0.1.7. Names now compare case exactly, so a cross-reference whose case does
+  not match its target is reported: `</#plan>` against a heading written
+  `{#Plan}` draws a `broken-crossref` where the previous server reported
+  nothing at all and the reference silently pointed at the differently-cased
+  heading.
+
 ## 0.1.2
 
 - Bundle carve-lsp 0.1.7, five releases on from the 0.1.2 this package shipped
