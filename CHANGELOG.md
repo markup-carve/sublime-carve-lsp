@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Bundle carve-lsp 0.1.11 (from 0.1.9), whose engine is carve-js 0.1.11.
+  Headings, folds and semantic tokens reach blocks inside list items,
+  definitions and footnote bodies, footnote navigation and rename work
+  against the 0.1.11 engine, and diagnostics keep their range after an emoji
+  on the line.
+
 ## 0.1.3
 
 - Bundle carve-lsp 0.1.9, whose engine resolves to carve-js 0.1.10 instead of
