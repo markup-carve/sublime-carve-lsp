@@ -3,7 +3,7 @@
 ## 0.1.4
 
 - Bundle carve-lsp 0.1.12 (from 0.1.9), whose engine is carve-js 0.1.11
-  (#12). Headings, folds and semantic tokens reach blocks inside list items,
+  (#12, #13). Headings, folds and semantic tokens reach blocks inside list items,
   definitions and footnote bodies, footnote navigation and rename work
   against the 0.1.11 engine, and diagnostics keep their range after an emoji
   on the line. The server keeps running when the editor refuses one of its
