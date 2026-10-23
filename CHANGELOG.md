@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.5
+
+- Bundle carve-lsp 0.1.14 (from 0.1.12), whose engine is carve-js 0.1.13 (#14).
+  Diagnostics follow the 0.1.11 spec (continuation markers, CSV/TSV table
+  fences, include regions), lint covers included files, and new quick fixes
+  and table conversion actions are available.
+- Document the server's `carve` settings and `carve.includes.*` in the
+  settings schema and README (#14).
+- Expose `initializationOptions.workspaceTrusted`, off by default, so includes
+  can be turned on in Sublime Text (#14).
+- Require Node 20, as the bundled engine declares (#14).
+
 ## 0.1.4
 
 - Bundle carve-lsp 0.1.12 (from 0.1.9), whose engine is carve-js 0.1.11
