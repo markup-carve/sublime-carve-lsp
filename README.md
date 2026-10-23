@@ -117,10 +117,9 @@ unless you want to override the project.
 | `carve.severities` | `{}` | Per-code severity: `"error"`, `"warning"`, `"information"`, `"hint"` or `"off"` |
 | `carve.includes.*` | | See [Includes](#includes) |
 
-Put these keys in `settings`, not in `initializationOptions`: the server
-replaces its `carve` options with whatever `settings` carries when LSP sends
-it after startup, so a `carve` section in `initializationOptions` does not
-stick.
+Keep these keys in `settings`, not in `initializationOptions`: once
+`settings` holds any key, LSP sends it after startup and the server replaces
+the `carve` options it got from `initializationOptions` with it.
 
 ### Includes
 
