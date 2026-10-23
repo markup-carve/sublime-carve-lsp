@@ -26,7 +26,7 @@ Advertised by carve-lsp and surfaced through the LSP package:
 | Feature | What it gives you |
 |---|---|
 | **Diagnostics** | Markdown/Djot habits that silently produce wrong output - `**bold**` (Carve bold is a single `*`), `~~strike~~`, `+` bullets - plus unresolved references and other document problems |
-| **Code actions** | Quick fixes for those migration diagnostics |
+| **Code actions** | Quick fixes for those diagnostics, *Align table*, CSV/TSV to pipe table and back, and *Export as Markdown / HTML* |
 | **Document symbols** | Headings as an outline (`LSP: Document Symbols`) |
 | **Hover** | Explains the construct under the cursor |
 | **Go to definition** | Jumps a `</#id>` cross-reference, a `[^footnote]`, or a `[link][ref]` to what it names |
@@ -34,10 +34,13 @@ Advertised by carve-lsp and surfaced through the LSP package:
 | **Rename** | Renames an id or label and every reference to it |
 | **Formatting** | `carve fmt` through the standard LSP format command |
 | **Folding** | Sections, containers, and fenced blocks |
-| **Completion** | Triggered on `:`, `#`, `^`, `[` |
+| **Completion** | Triggered on `:`, `#`, `^`, `[`, `@`, `{`, including include paths, regions and options |
+| **Inlay hints** | Generated heading ids, colon-fence closers, and a hint after a bare list marker |
+| **Includes** | Diagnostics, go-to-definition and completion on `{{ path }}` directives, with lint findings from included files shown on the directive - off until enabled, see [Includes](#includes) |
 
-Colouring stays with the syntax definition: carve-lsp deliberately does not
-advertise semantic tokens, so the two layers never fight over the same text.
+Colouring stays with the syntax definition by default. carve-lsp also offers
+semantic tokens, which LSP applies only when its `semantic_highlighting`
+setting is on. Inlay hints likewise need LSP's `show_inlay_hints` setting.
 
 ## Install
 
@@ -89,10 +92,55 @@ enabled by LSP out of the box.
 Open **Preferences > Package Settings > LSP > Servers > LSP-carve**, or run
 **Preferences: LSP-carve Settings** from the command palette.
 
-carve-lsp reads no configuration of its own - what it reports is derived from
-the document and the shared Carve corpus - so the settings file holds only the
-standard LSP client options (`selector`, `initializationOptions`, `env`, and so
-on).
+Server options go under `settings`, with dotted keys. Each key you set here
+overrides the same key in the project's `.carverc.json`; anything you leave out
+comes from that file, then from the server default. So leave `settings` empty
+unless you want to override the project.
+
+```jsonc
+{
+	"settings": {
+		"carve.format.alignTables": true,
+		"carve.severities": { "table-width-total": "error" },
+	},
+}
+```
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `carve.platforms` | `[]` | Extra platform lint profiles (`"github"`) |
+| `carve.extensions` | `[]` | Enabled extensions, for example `"semantic-span"` |
+| `carve.inlayHints` | `true` | `false` turns all inlay hints off; `{ "bareListMarkers": false }` turns off one |
+| `carve.exportActions` | `true` | Offer the *Export as Markdown / HTML* actions |
+| `carve.formatter` | `"conservative"` | `"migration"` opts into whole-document canonical formatting |
+| `carve.format.alignTables` | `false` | Align table cells when formatting |
+| `carve.severities` | `{}` | Per-code severity: `"error"`, `"warning"`, `"information"`, `"hint"` or `"off"` |
+| `carve.includes.*` | | See [Includes](#includes) |
+
+Put these keys in `settings`, not in `initializationOptions`: the server
+replaces its `carve` options with whatever `settings` carries when LSP sends
+it after startup, so a `carve` section in `initializationOptions` does not
+stick.
+
+### Includes
+
+carve-lsp resolves `{{ path }}` includes only in a workspace the client reports
+as trusted. Sublime Text has no notion of workspace trust, so includes are off
+until you turn them on, either by trusting the workspace:
+
+```jsonc
+{
+	"initializationOptions": { "workspaceTrusted": true },
+}
+```
+
+or by enabling them outright with `"carve.includes.enabled": "on"` in
+`settings`. Targets must stay inside the include root (the project folder, or
+`carve.includes.includeRoot`), remote targets are never fetched, and depth and
+size are bounded. The remaining `carve.includes.*` keys (`includeRoot`,
+`allowAbsolute`, `allowedRemoteHosts`, `maxDepth`, `maxBytes`,
+`maxResolverCalls`) are described in the settings schema and in the
+[carve-lsp README](https://github.com/markup-carve/carve-lsp#include-settings).
 
 ## Relationship to the Carve package
 
