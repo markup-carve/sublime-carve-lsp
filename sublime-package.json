@@ -14,6 +14,135 @@
                   "type": "string",
                   "default": "auto",
                   "markdownDescription": "The path to the server binary to use for starting the language server. Use `auto` for the package to manage (install/update) server automatically.\n\n> [!NOTE]\n> Change this instead of directly updating `command` - the `${server_path}` variable is dynamically resolved based on this setting.\n\n> [!WARNING]\n> Using custom binary could result in package settings not matching what server supports."
+                },
+                "initializationOptions": {
+                  "type": "object",
+                  "properties": {
+                    "workspaceTrusted": {
+                      "type": "boolean",
+                      "default": false,
+                      "markdownDescription": "Report the workspace as trusted. With `carve.includes.enabled` at `auto` (the default), the server resolves `{{ path }}` includes only when this is `true`. Sublime Text has no workspace trust of its own, so this is off unless you turn it on."
+                    }
+                  }
+                },
+                "settings": {
+                  "type": "object",
+                  "properties": {
+                    "carve.platforms": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "github"
+                        ]
+                      },
+                      "default": [],
+                      "markdownDescription": "Extra platform lint profiles."
+                    },
+                    "carve.extensions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": [],
+                      "markdownDescription": "Enabled extension names. `semantic-span` colors `samp`, `var`, `cite` and `dfn` as keywords in span attributes."
+                    },
+                    "carve.inlayHints": {
+                      "anyOf": [
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "bareListMarkers": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      ],
+                      "default": true,
+                      "markdownDescription": "Show inlay hints: generated heading ids, colon-fence closers and the bare list marker hint. `false` turns all of them off; `{ \"bareListMarkers\": false }` turns off only that one. LSP shows inlay hints only when its `show_inlay_hints` setting is on."
+                    },
+                    "carve.exportActions": {
+                      "type": "boolean",
+                      "default": true,
+                      "markdownDescription": "Offer the *Export as Markdown* and *Export as HTML* source actions."
+                    },
+                    "carve.formatter": {
+                      "type": "string",
+                      "enum": [
+                        "conservative",
+                        "migration"
+                      ],
+                      "default": "conservative",
+                      "markdownDescription": "`conservative` formats whitespace only; `migration` opts into canonical whole-document conversion."
+                    },
+                    "carve.format.alignTables": {
+                      "type": "boolean",
+                      "default": false,
+                      "markdownDescription": "Align table cells in document, range and on-type formatting. The *Align table* code action works without this setting."
+                    },
+                    "carve.severities": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": [
+                          "error",
+                          "warning",
+                          "information",
+                          "hint",
+                          "off"
+                        ]
+                      },
+                      "default": {},
+                      "markdownDescription": "Override the severity of a diagnostic code, for example `{ \"table-width-total\": \"error\" }`."
+                    },
+                    "carve.includes.enabled": {
+                      "type": "string",
+                      "enum": [
+                        "auto",
+                        "on",
+                        "off"
+                      ],
+                      "default": "auto",
+                      "markdownDescription": "Resolve `{{ path }}` includes. `auto` resolves them only when `initializationOptions.workspaceTrusted` is `true`; `on` always; `off` never."
+                    },
+                    "carve.includes.includeRoot": {
+                      "type": "string",
+                      "markdownDescription": "Containment root for includes. Defaults to the workspace root. Setting it also makes the HTML preview expand includes. Variables such as `${folder}` are expanded."
+                    },
+                    "carve.includes.allowAbsolute": {
+                      "type": "boolean",
+                      "default": false,
+                      "markdownDescription": "Allow absolute include paths. They still have to resolve inside the include root."
+                    },
+                    "carve.includes.allowedRemoteHosts": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": [],
+                      "markdownDescription": "Hosts a remote include may name. The server has no fetcher, so remote targets are refused either way."
+                    },
+                    "carve.includes.maxDepth": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "default": 16,
+                      "markdownDescription": "Maximum transitive include depth."
+                    },
+                    "carve.includes.maxBytes": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "markdownDescription": "Total byte budget across the include graph. Defaults to the larger of 1 MiB and 8 times the document."
+                    },
+                    "carve.includes.maxResolverCalls": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "default": 1000,
+                      "markdownDescription": "Resolver calls one include walk may make."
+                    }
+                  }
                 }
               }
             }

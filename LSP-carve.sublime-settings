@@ -13,8 +13,22 @@
 	// the sublime-carve package, which this plugin expects to be installed.
 	"selector": "text.carve",
 
-	// carve-lsp reads no configuration of its own: everything it reports comes
-	// from the document and the shared Carve corpus. Client-side behaviour is
-	// configured through the standard LSP settings above this line.
-	"settings": {}
+	"initializationOptions": {
+		// Sublime Text has no workspace trust, so the server treats every window
+		// as untrusted and leaves `{{ path }}` includes off. Set this to true, or
+		// set "carve.includes.enabled" to "on" below, to resolve includes.
+		"workspaceTrusted": false,
+	},
+
+	// Server settings, sent under the `carve` section. A key left out here comes
+	// from the project's `.carverc.json`, then from the server default, so only
+	// set what you want to override. Examples:
+	//
+	//   "carve.format.alignTables": true,
+	//   "carve.severities": { "table-width-total": "error" },
+	//   "carve.includes.enabled": "on",
+	//   "carve.includes.includeRoot": "${folder}",
+	//
+	// The full list is in the settings schema and in the carve-lsp README.
+	"settings": {},
 }
