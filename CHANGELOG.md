@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.6
+
+Sublime now bundles carve-lsp 0.1.15, including the carve-js 0.1.15 engine.
+
+### Improvements
+
+- The bundled language server follows the latest published Carve parsing and task-state behavior (#17).
+
+**Full Changelog**: https://github.com/markup-carve/sublime-carve-lsp/compare/0.1.5...0.1.6
+
 ## 0.1.5
 
 - Bundle carve-lsp 0.1.14 (from 0.1.12), whose engine is carve-js 0.1.13 (#14).
