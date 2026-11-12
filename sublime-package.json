@@ -67,7 +67,15 @@
                     "carve.exportActions": {
                       "type": "boolean",
                       "default": true,
-                      "markdownDescription": "Offer the *Export as Markdown* and *Export as HTML* source actions."
+                      "markdownDescription": "Offer the *Export as Markdown*, *Export as HTML* and *Export as PDF* source actions."
+                    },
+                    "carve.pdf.crv2pdfPath": {
+                      "type": "string",
+                      "markdownDescription": "Executable *Export as PDF* runs instead of looking up `crv2pdf` (from markup-carve/carve-pdf) on `PATH`."
+                    },
+                    "carve.pdf.browserPath": {
+                      "type": "string",
+                      "markdownDescription": "Chrome, Chromium or Edge executable *Export as PDF* prints with when `crv2pdf` is unavailable."
                     },
                     "carve.formatter": {
                       "type": "string",

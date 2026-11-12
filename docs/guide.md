@@ -26,7 +26,7 @@ Advertised by carve-lsp and surfaced through the LSP package:
 | Feature | What it gives you |
 |---|---|
 | **Diagnostics** | Markdown/Djot habits that silently produce wrong output - `**bold**` (Carve bold is a single `*`), `~~strike~~`, `+` bullets - plus unresolved references and other document problems |
-| **Code actions** | Quick fixes for those diagnostics (including rewriting a deprecated `\|=>` table alignment as `\|={>}`), *Align table*, CSV/TSV to pipe table and back, and *Export as Markdown / HTML* |
+| **Code actions** | Quick fixes for those diagnostics (including rewriting a deprecated `\|=>` table alignment as `\|={>}`), *Align table*, CSV/TSV to pipe table and back, and *Export as Markdown / HTML / PDF* (see [Export](#export)) |
 | **Document symbols** | Headings as an outline (`LSP: Document Symbols`) |
 | **Hover** | Explains the construct under the cursor |
 | **Go to definition** | Jumps a `</#id>` cross-reference, a `[^footnote]`, or a `[link][ref]` to what it names |
@@ -111,11 +111,12 @@ unless you want to override the project.
 | `carve.platforms` | `[]` | Extra platform lint profiles (`"github"`) |
 | `carve.extensions` | `[]` | Enabled extensions, for example `"semantic-span"` |
 | `carve.inlayHints` | `true` | `false` turns all inlay hints off; `{ "bareListMarkers": false }` turns off one |
-| `carve.exportActions` | `true` | Offer the *Export as Markdown / HTML* actions |
+| `carve.exportActions` | `true` | Offer the *Export as Markdown / HTML / PDF* actions |
 | `carve.formatter` | `"conservative"` | `"migration"` opts into whole-document canonical formatting |
 | `carve.format.alignTables` | `false` | Align table cells when formatting |
 | `carve.severities` | `{}` | Per-code severity: `"error"`, `"warning"`, `"information"`, `"hint"` or `"off"` |
 | `carve.includes.*` | | See [Includes](#includes) |
+| `carve.pdf.crv2pdfPath`, `carve.pdf.browserPath` | | See [Export](#export) |
 
 Diagnostics keep the severity the engine gives them, so authoring hints show
 as hints. The keys in `carve.severities` are lint rule ids: use
@@ -145,6 +146,37 @@ size are bounded. The remaining `carve.includes.*` keys (`includeRoot`,
 `allowAbsolute`, `allowedRemoteHosts`, `maxDepth`, `maxBytes`,
 `maxResolverCalls`) are described in the settings schema and in the
 [carve-lsp README](https://github.com/markup-carve/carve-lsp#include-settings).
+
+### Export
+
+The *Export as Markdown*, *Export as HTML* and *Export as PDF* code actions
+write next to the source: `notes.crv` becomes `notes.md`, `notes.html` or
+`notes.pdf`, replacing an existing file. Run them from **LSP: Source Action**
+in the command palette.
+
+*Export as PDF* produces the PDF one of two ways:
+
+1. With `crv2pdf` from [carve-pdf](https://github.com/markup-carve/carve-pdf),
+   which gives the better page layout. The server looks for it on `PATH`;
+   install it as the carve-pdf README describes.
+2. Without it, the server renders HTML and prints it with an installed Chrome,
+   Chromium or Edge in headless mode.
+
+If neither is found, the action fails with a message naming both. To point the
+server at a specific executable, set these keys in `settings`:
+
+```jsonc
+{
+	"settings": {
+		"carve.pdf.crv2pdfPath": "/path/to/crv2pdf",
+		"carve.pdf.browserPath": "/path/to/chromium",
+	},
+}
+```
+
+LSP sends the dotted keys to the server as `{ "carve": { "pdf": { ... } } }`,
+the shape carve-lsp reads. Neither tool is bundled with this package or with
+carve-lsp. `"carve.exportActions": false` hides all three export actions.
 
 ## Relationship to the Carve package
 
