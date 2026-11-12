@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.7
+
+Sublime now bundles carve-lsp 0.1.16, including the carve-js 0.1.16 engine of the Carve 0.1.14 wave.
+
+### Improvements
+
+- The bundled language server follows the Carve 0.1.14 readings: braced cell alignment (`|={>}`) with a quick fix for the deprecated `|=>` prefix, and the renamed lint rules (`table-marker-run-padding`; `raw-block-syntax` retired) (#20).
+- *Export as PDF* joins the export code actions; the settings schema adds `carve.pdf.crv2pdfPath` and `carve.pdf.browserPath` (#23).
+
+**Full Changelog**: https://github.com/markup-carve/sublime-carve-lsp/compare/0.1.6...0.1.7
+
 ## 0.1.6
 
 Sublime now bundles carve-lsp 0.1.15, including the carve-js 0.1.15 engine.
