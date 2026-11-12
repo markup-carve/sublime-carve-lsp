@@ -26,7 +26,7 @@ Advertised by carve-lsp and surfaced through the LSP package:
 | Feature | What it gives you |
 |---|---|
 | **Diagnostics** | Markdown/Djot habits that silently produce wrong output - `**bold**` (Carve bold is a single `*`), `~~strike~~`, `+` bullets - plus unresolved references and other document problems |
-| **Code actions** | Quick fixes for those diagnostics, *Align table*, CSV/TSV to pipe table and back, and *Export as Markdown / HTML* |
+| **Code actions** | Quick fixes for those diagnostics (including rewriting a deprecated `\|=>` table alignment as `\|={>}`), *Align table*, CSV/TSV to pipe table and back, and *Export as Markdown / HTML* |
 | **Document symbols** | Headings as an outline (`LSP: Document Symbols`) |
 | **Hover** | Explains the construct under the cursor |
 | **Go to definition** | Jumps a `</#id>` cross-reference, a `[^footnote]`, or a `[link][ref]` to what it names |
@@ -116,6 +116,11 @@ unless you want to override the project.
 | `carve.format.alignTables` | `false` | Align table cells when formatting |
 | `carve.severities` | `{}` | Per-code severity: `"error"`, `"warning"`, `"information"`, `"hint"` or `"off"` |
 | `carve.includes.*` | | See [Includes](#includes) |
+
+Diagnostics keep the severity the engine gives them, so authoring hints show
+as hints. The keys in `carve.severities` are lint rule ids: use
+`table-marker-run-padding` (it replaces `table-alignment-run-padding`), and
+drop `raw-block-syntax`, which is retired.
 
 Keep these keys in `settings`, not in `initializationOptions`: once
 `settings` holds any key, LSP sends it after startup and the server replaces
