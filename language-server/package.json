@@ -1,6 +1,6 @@
 {
   "private": true,
   "dependencies": {
-    "@markup-carve/carve-lsp": "github:markup-carve/carve-lsp#3f883093d74733fefde9302cc97ebaa5df1c51f5"
+    "@markup-carve/carve-lsp": "github:markup-carve/carve-lsp#344d5617b32ed24982eefe4d2a9ae9c502923fec"
   }
 }

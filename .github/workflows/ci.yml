@@ -75,6 +75,9 @@ jobs:
           npm_config_allow_git: all
         run: npm install --no-audit --no-fund
 
+      - name: Verify Markdown export
+        run: node --test language-server/test/export.test.mjs
+
       - name: Handshake with the server over stdio
         run: |
           python - <<'PY'
