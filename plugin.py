@@ -4,6 +4,7 @@ from LSP.plugin import LspPlugin
 from LSP.plugin import OnPreStartContext
 from lsp_utils import NodeManager
 from pathlib import Path
+import os
 from sublime_lib import ResourcePath
 from typing import final
 from typing_extensions import override
@@ -30,6 +31,10 @@ class LspCarvePlugin(LspPlugin):
     @override
     def on_pre_start_async(cls, context: OnPreStartContext) -> None:
         package_name = cls.plugin_storage_path.name
+        # The server is a git pin whose engine is a git pin too. npm 12 refuses
+        # that transitive git dependency, and a project .npmrc does not reach
+        # the child npm that prepares it, so lsp_utils' npm gets it from the env.
+        os.environ.setdefault('npm_config_allow_git', 'all')
         NodeManager.on_pre_start_async(
             context,
             cls.plugin_storage_path,

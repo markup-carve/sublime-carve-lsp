@@ -18,6 +18,11 @@
 		// as untrusted and leaves `{{ path }}` includes off. Set this to true, or
 		// set "carve.includes.enabled" to "on" below, to resolve includes.
 		"workspaceTrusted": false,
+		"carve": {
+			// Sublime routes server commands to carve-lsp, so the server may
+			// register `carve.exportPdf` and offer *Export as PDF*.
+			"pdfExportCommand": true,
+		},
 	},
 
 	// Server settings, sent under the `carve` section. A key left out here comes
