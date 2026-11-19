@@ -13,9 +13,9 @@ adds everything a language server provides on top of it.
 The `next2` branch bundles the Carve 0.2 build of carve-lsp, pinned to a
 carve-lsp `next2` commit. Package Control does not ship it; install it from a
 `next2` checkout. Because the server comes from a git ref, `lsp_utils` needs
-`git` on `PATH` to install it, and npm 12 or later also needs
-`npm_config_allow_git=all` in the environment. What changes for a Sublime
-user:
+`git` on `PATH` to install it. npm 12 refuses the server's git-pinned engine
+by default, so the plugin sets `npm_config_allow_git=all` for the install
+unless your environment already sets it. What changes for a Sublime user:
 
 - Diagnostics use the Carve 0.2 lint ids. Renamed rules keep their meaning
   under the new id, for example `duplicate-id` (was `duplicate-heading-id`).
