@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, next2]
   pull_request:
 
 # Jobs carry an explicit timeout-minutes: without one GitHub applies a
@@ -68,6 +68,10 @@ jobs:
 
       - name: Install the pinned carve-lsp
         working-directory: language-server
+        # carve-lsp and its engine are git pins on next2; npm 12 refuses a
+        # transitive git dependency unless allow-git says otherwise.
+        env:
+          npm_config_allow_git: all
         run: npm install --no-audit --no-fund
 
       - name: Handshake with the server over stdio
@@ -88,7 +92,11 @@ jobs:
           )
           server.stdin.write(frame({
               'jsonrpc': '2.0', 'id': 1, 'method': 'initialize',
-              'params': {'processId': None, 'rootUri': None, 'capabilities': {}},
+              'params': {
+                  'processId': None, 'rootUri': None, 'capabilities': {},
+                  # The opt-in LSP-carve.sublime-settings sends by default.
+                  'initializationOptions': {'carve': {'pdfExportCommand': True}},
+              },
           }))
           server.stdin.flush()
           time.sleep(2)
@@ -100,7 +108,9 @@ jobs:
                   # `**bold**` is a Markdown habit Carve does not share, so the
                   # server must report it. `|=>` is the 0.1.13 alignment spelling,
                   # deprecated by the engine release after 0.1.15.
-                  'text': '# Title\n\n**markdown bold**\n\n|=> Price |= Name |\n| 1 | a |\n',
+                  # A `+` line is text in Carve 0.2, which reports it as a
+                  # deprecated continuation marker; a 0.1 server does not.
+                  'text': '# Title\n\n**markdown bold**\n\n|=> Price |= Name |\n| 1 | a |\n\n- item\n+\n  more\n',
               }},
           }))
           server.stdin.flush()
@@ -118,6 +128,10 @@ jobs:
               problems.append('expected diagnostic for ** not reported')
           if 'deprecated-cell-alignment' not in text:
               problems.append('expected diagnostic for the deprecated |=> alignment not reported')
+          if 'deprecated-continuation-marker' not in text:
+              problems.append('expected the Carve 0.2 deprecated-continuation-marker diagnostic for a + line')
+          if 'carve.exportPdf' not in text:
+              problems.append('carve.exportPdf not advertised despite the pdfExportCommand opt-in')
           if problems:
               print('FAILED:', '; '.join(problems))
               print('stderr:', err.decode('utf-8', 'replace')[:2000])
