@@ -40,5 +40,5 @@ class LspCarvePlugin(LspPlugin):
             cls.plugin_storage_path,
             ResourcePath('Packages', package_name, 'language-server'),
             Path('node_modules', '@markup-carve', 'carve-lsp', 'dist', 'server.js'),
-            node_version_requirement='>=20',
+            node_version_requirement='>=22',
         )

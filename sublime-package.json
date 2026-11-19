@@ -77,7 +77,7 @@
                     "carve.exportActions": {
                       "type": "boolean",
                       "default": true,
-                      "markdownDescription": "Offer the *Export as Markdown*, *Export as HTML* and *Export as PDF* source actions. *Export as PDF* also needs `initializationOptions.carve.pdfExportCommand`. Under Carve 0.2, *Export as Markdown* fails with \"writer not available\" until the engine registers a `markdown` writer."
+                      "markdownDescription": "Offer the *Export as Markdown*, *Export as HTML* and *Export as PDF* source actions. *Export as PDF* also needs `initializationOptions.carve.pdfExportCommand`."
                     },
                     "carve.pdf.crv2pdfPath": {
                       "type": "string",

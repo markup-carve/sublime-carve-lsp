@@ -23,9 +23,8 @@ unless your environment already sets it. What changes for a Sublime user:
 - Opt-in 0.2 rules, such as `djot-plus-bullet`, stay off until
   `carve.severities` names them with any value but `"off"`.
 - A `+` line is text in 0.2, so the "Escape the `+`" quick fix is gone.
-- *Export as Markdown* fails with "The markdown writer is not available yet in
-  Carve 0.2" until the engine registers a `markdown` writer
-  ([carve-js#5057](https://github.com/markup-carve/carve-js/issues/5057)).
+- *Export as Markdown* writes a `.md` file beside the Carve source through the
+  Carve 0.2 `markdown` writer (C2-W-001).
 - *Export as PDF* needs the `initializationOptions.carve.pdfExportCommand`
   opt-in, which this package's default settings turn on.
 
@@ -179,8 +178,7 @@ write next to the source: `notes.crv` becomes `notes.md`, `notes.html` or
 `notes.pdf`, replacing an existing file. Run them from **LSP: Source Action**
 in the command palette.
 
-Under Carve 0.2, *Export as Markdown* fails with a "writer not available"
-error until the engine registers a `markdown` writer.
+The pinned Carve 0.2 engine provides the `markdown` writer (C2-W-001).
 
 *Export as PDF* is a server command, which carve-lsp advertises only when the
 client opts in at startup. This package's default settings opt in:

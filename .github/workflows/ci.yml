@@ -65,7 +65,7 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install the pinned carve-lsp
         working-directory: language-server
@@ -74,6 +74,9 @@ jobs:
         env:
           npm_config_allow_git: all
         run: npm install --no-audit --no-fund
+
+      - name: Verify Markdown export
+        run: node --test language-server/test/export.test.mjs
 
       - name: Handshake with the server over stdio
         run: |
