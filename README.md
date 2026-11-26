@@ -2,6 +2,8 @@
 
 Language server integration for Carve in Sublime Text through `carve-lsp`. This package installs as **LSP-carve** and follows the server version managed by `lsp_utils`. See the [Carve documentation](https://markup-carve.github.io/carve/) for the markup language.
 
+The `next2` branch targets Carve 0.2; the [guide](docs/guide.md#carve-02) lists what changed.
+
 ## Features
 
 - Diagnostics, completion, and code actions.

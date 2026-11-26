@@ -8,6 +8,29 @@ Syntax highlighting comes from
 [sublime-carve](https://github.com/markup-carve/sublime-carve); this package
 adds everything a language server provides on top of it.
 
+## Carve 0.2
+
+The `next2` branch bundles the Carve 0.2 build of carve-lsp, pinned to a
+carve-lsp `next2` commit. Package Control does not ship it; install it from a
+`next2` checkout. Because the server comes from a git ref, `lsp_utils` needs
+`git` on `PATH` to install it. npm 12 refuses the server's git-pinned engine
+by default, so the plugin sets `npm_config_allow_git=all` for the install
+unless your environment already sets it. What changes for a Sublime user:
+
+- Diagnostics use the Carve 0.2 lint ids. Renamed rules keep their meaning
+  under the new id, for example `duplicate-id` (was `duplicate-heading-id`).
+  Update any `carve.severities` key that names an old id.
+- Opt-in 0.2 rules, such as `djot-plus-bullet`, stay off until
+  `carve.severities` names them with any value but `"off"`.
+- A `+` line is text in 0.2, so the "Escape the `+`" quick fix is gone.
+- *Export as Markdown* writes a `.md` file beside the Carve source through the
+  Carve 0.2 `markdown` writer (C2-W-001).
+- *Export as PDF* needs the `initializationOptions.carve.pdfExportCommand`
+  opt-in, which this package's default settings turn on.
+
+The full list of language changes is `spec/0.2/UPGRADING.md` in the
+[Carve repository](https://github.com/markup-carve/carve/tree/next2).
+
 > **Names.** This repository is `sublime-carve-lsp`, but it installs as the
 > package **`LSP-carve`** - Sublime's client packages are all named
 > `LSP-<language>` (LSP-yaml, LSP-json, ...), which is how Package Control
@@ -25,7 +48,7 @@ Advertised by carve-lsp and surfaced through the LSP package:
 
 | Feature | What it gives you |
 |---|---|
-| **Diagnostics** | Markdown/Djot habits that silently produce wrong output - `**bold**` (Carve bold is a single `*`), `~~strike~~`, `+` bullets - plus unresolved references and other document problems |
+| **Diagnostics** | Markdown/Djot habits that silently produce wrong output - `**bold**` (Carve bold is a single `*`), `~~strike~~`, and with `carve.severities` also `+` bullets - plus unresolved references and other document problems |
 | **Code actions** | Quick fixes for those diagnostics (including rewriting a deprecated `\|=>` table alignment as `\|={>}`), *Align table*, CSV/TSV to pipe table and back, and *Export as Markdown / HTML / PDF* (see [Export](#export)) |
 | **Document symbols** | Headings as an outline (`LSP: Document Symbols`) |
 | **Hover** | Explains the construct under the cursor |
@@ -114,7 +137,7 @@ unless you want to override the project.
 | `carve.exportActions` | `true` | Offer the *Export as Markdown / HTML / PDF* actions |
 | `carve.formatter` | `"conservative"` | `"migration"` opts into whole-document canonical formatting |
 | `carve.format.alignTables` | `false` | Align table cells when formatting |
-| `carve.severities` | `{}` | Per-code severity: `"error"`, `"warning"`, `"information"`, `"hint"` or `"off"` |
+| `carve.severities` | `{}` | Per-code severity: `"error"`, `"warning"`, `"information"`, `"hint"` or `"off"`; any value but `"off"` also turns an opt-in rule on |
 | `carve.includes.*` | | See [Includes](#includes) |
 | `carve.pdf.crv2pdfPath`, `carve.pdf.browserPath` | | See [Export](#export) |
 
@@ -123,7 +146,8 @@ as hints. The keys in `carve.severities` are lint rule ids: use
 `table-marker-run-padding` (it replaces `table-alignment-run-padding`), and
 drop `raw-block-syntax`, which is retired.
 
-Keep these keys in `settings`, not in `initializationOptions`: once
+Keep these keys in `settings`, not in `initializationOptions`, except
+`carve.pdfExportCommand` (see [Export](#export)): once
 `settings` holds any key, LSP sends it after startup and the server replaces
 the `carve` options it got from `initializationOptions` with it.
 
@@ -153,6 +177,21 @@ The *Export as Markdown*, *Export as HTML* and *Export as PDF* code actions
 write next to the source: `notes.crv` becomes `notes.md`, `notes.html` or
 `notes.pdf`, replacing an existing file. Run them from **LSP: Source Action**
 in the command palette.
+
+The pinned Carve 0.2 engine provides the `markdown` writer (C2-W-001).
+
+*Export as PDF* is a server command, which carve-lsp advertises only when the
+client opts in at startup. This package's default settings opt in:
+
+```jsonc
+{
+	"initializationOptions": { "carve": { "pdfExportCommand": true } },
+}
+```
+
+Overriding `initializationOptions` in your own settings replaces that object,
+so keep `"carve": { "pdfExportCommand": true }` in it or the PDF action
+disappears.
 
 *Export as PDF* produces the PDF one of two ways:
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Breaking
+
+- Bundles the Carve 0.2 build of carve-lsp, pinned to carve-lsp `next2` (3f88309). Diagnostics use the 0.2 lint ids, and *Export as Markdown* fails with "writer not available" until the engine registers a `markdown` writer.
+
+### Improvements
+
+- The default settings set `initializationOptions.carve.pdfExportCommand`, so *Export as PDF* stays available with the newer server.
+
 ## 0.1.8
 
 Sublime now bundles carve-lsp 0.1.17, so the language server no longer keeps a CPU core busy in large workspaces.
