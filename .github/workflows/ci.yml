@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, next2]
+    branches: [main]
   pull_request:
 
 # Jobs carry an explicit timeout-minutes: without one GitHub applies a
