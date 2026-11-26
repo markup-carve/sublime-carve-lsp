@@ -10,9 +10,9 @@ adds everything a language server provides on top of it.
 
 ## Carve 0.2
 
-The `next2` branch bundles the Carve 0.2 build of carve-lsp, pinned to a
+This branch bundles the Carve 0.2 build of carve-lsp, pinned to a
 carve-lsp `next2` commit. Package Control does not ship it; install it from a
-`next2` checkout. Because the server comes from a git ref, `lsp_utils` needs
+git checkout. Because the server comes from a git ref, `lsp_utils` needs
 `git` on `PATH` to install it. npm 12 refuses the server's git-pinned engine
 by default, so the plugin sets `npm_config_allow_git=all` for the install
 unless your environment already sets it. What changes for a Sublime user:
@@ -29,7 +29,7 @@ unless your environment already sets it. What changes for a Sublime user:
   opt-in, which this package's default settings turn on.
 
 The full list of language changes is `spec/0.2/UPGRADING.md` in the
-[Carve repository](https://github.com/markup-carve/carve/tree/next2).
+[Carve repository](https://github.com/markup-carve/carve/tree/main).
 
 > **Names.** This repository is `sublime-carve-lsp`, but it installs as the
 > package **`LSP-carve`** - Sublime's client packages are all named
