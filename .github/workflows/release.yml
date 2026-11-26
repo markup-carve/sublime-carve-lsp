@@ -122,7 +122,8 @@ jobs:
 
   tests:
     name: Package files validate and the pinned server speaks LSP
-    runs-on: ubuntu-latest
+    # Python 3.8 (Sublime's plugin host) has no build for Ubuntu 26.04, which ubuntu-latest now is.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.8
+
+Sublime now bundles carve-lsp 0.1.17, so the language server no longer keeps a CPU core busy in large workspaces.
+
+### Fixes
+
+- Position lookups no longer slow down with file size, so startup indexing and links, highlights and selection ranges in large documents are fast again (markup-carve/carve-lsp#668).
+- Workspace diagnostics are reported once and then only when something changes, so a client that re-requests them right away no longer drives the server at full CPU, and a deleted file's warnings are cleared (markup-carve/carve-lsp#668).
+
+**Full Changelog**: https://github.com/markup-carve/sublime-carve-lsp/compare/0.1.7...0.1.8
+
 ## 0.1.7
 
 Sublime now bundles carve-lsp 0.1.16, including the carve-js 0.1.16 engine of the Carve 0.1.14 wave.
