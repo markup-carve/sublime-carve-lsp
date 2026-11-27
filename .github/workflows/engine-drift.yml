@@ -70,7 +70,7 @@ jobs:
           fi
           case "${declared}" in
             github:*|git+*|git:*)
-              echo "::notice::${pkg} is pinned to the git ref ${declared} (Carve 0.2 next2), which has no registry release to compare against"
+              echo "::notice::${pkg} is pinned to the git ref ${declared} (Carve 0.2 main), which has no registry release to compare against"
               echo "git=true" >> "${GITHUB_OUTPUT}"
               exit 0
               ;;
