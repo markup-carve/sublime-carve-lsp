@@ -2,13 +2,21 @@
 
 ## Unreleased
 
+## 0.2.0 - 2026-11-27
+
+Sublime now bundles the Carve 0.2 build of carve-lsp.
+
 ### Breaking
 
-- Bundles the Carve 0.2 build of carve-lsp, pinned to carve-lsp `next2` (3f88309). Diagnostics use the 0.2 lint ids, and *Export as Markdown* fails with "writer not available" until the engine registers a `markdown` writer.
+- Bundles the Carve 0.2 build of carve-lsp. Diagnostics use the 0.2 lint ids; update any `carve.severities` key that names an old id (#24).
+- The bundled server needs Node 22 or later (#26).
 
 ### Improvements
 
-- The default settings set `initializationOptions.carve.pdfExportCommand`, so *Export as PDF* stays available with the newer server.
+- *Export as Markdown* writes a `.md` file through the Carve 0.2 `markdown` writer (#26).
+- The default settings set `initializationOptions.carve.pdfExportCommand`, so *Export as PDF* stays available with the newer server (#24).
+
+**Full Changelog**: https://github.com/markup-carve/sublime-carve-lsp/compare/0.1.8...0.2.0
 
 ## 0.1.8
 
