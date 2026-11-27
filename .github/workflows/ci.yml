@@ -69,7 +69,7 @@ jobs:
 
       - name: Install the pinned carve-lsp
         working-directory: language-server
-        # carve-lsp and its engine are git pins on next2; npm 12 refuses a
+        # carve-lsp and its engine are git pins on main; npm 12 refuses a
         # transitive git dependency unless allow-git says otherwise.
         env:
           npm_config_allow_git: all

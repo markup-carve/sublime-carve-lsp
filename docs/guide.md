@@ -11,7 +11,7 @@ adds everything a language server provides on top of it.
 ## Carve 0.2
 
 This branch bundles the Carve 0.2 build of carve-lsp, pinned to a
-carve-lsp `next2` commit. Package Control does not ship it; install it from a
+carve-lsp `main` commit. Package Control does not ship it; install it from a
 git checkout. Because the server comes from a git ref, `lsp_utils` needs
 `git` on `PATH` to install it. npm 12 refuses the server's git-pinned engine
 by default, so the plugin sets `npm_config_allow_git=all` for the install
